@@ -12,24 +12,23 @@ const AddExpenseComponent = () => {
     const [category, setCategory] = useState("")
 
   return (
-    <div className='flex flex-col  items-center'>
+    <div className='flex flex-col  items-center gap-2 mt-2'>
         <h1 className='text-3xl font-bold'>Add Expense</h1>
-        <div className='flex flex-col bg-[#3a3737] w-1/3 p-5 rounded-md'>
+        <div className='flex flex-col bg-[#272626] w-1/3 p-5 rounded-md border-1 border-purple-200'>
             <label>Expense Title</label><br/>
-            <input type='text' placeholder='what did you spend on?' className='w-full bg-black p-2 rounded-md'/><br/>
+            <input type='text' placeholder='what did you spend on?' className='w-full bg-black p-2 rounded-md border-1 border-purple-200'/><br/>
             <label>Amount</label><br/>
-            <input type='number' placeholder='$ 0.00' min={0} step="0.01" className='w-full bg-black p-2 rounded-md'/><br/>
+            <input type='number' placeholder='$ 0.00' min={0} step="0.01" className='w-full bg-black p-2 rounded-md border-1 border-purple-200'/><br/>
             <label>Date</label><br/>
-            
-            <input type='date' value={date} onChange={(e) => setDate(e.target.value)} className='w-full bg-black p-2 rounded-md'/><br/>
+            <input type='date' value={date} onChange={(e) => setDate(e.target.value)} className='w-full bg-black p-2 rounded-md border-1 border-purple-200'/><br/>
             <label>Category</label><br/>
-            <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full bg-black p-2 rounded-md'>
-                <option>Select a Category</option>
-                <option>Food</option>
-                <option>Entertainment</option>
-                <option>Utilities</option>
-                <option>Transport</option>
-                <option>Other</option>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full bg-black p-2 rounded-md  border-1 border-purple-200'>
+                <option value='' hidden>Select a Category</option>
+                <option value='Food'>Food</option>
+                <option value='Entertainment'>Entertainment</option>
+                <option value='Utilities'>Utilities</option>
+                <option value='Transport'>Transport</option>
+                <option value='Other'>Other</option>
             </select><br/>
             <button className='w-full bg-purple-500 not-only-of-type: p-2 rounded-md'>Add Expense</button>
         </div>

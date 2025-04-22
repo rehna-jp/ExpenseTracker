@@ -9,7 +9,7 @@ import Navbar from './Components/Navbar'
 
 const App = () => {
   return (
-    <div>
+    <div className=''>
       
       <BrowserRouter>
       <Navbar/>
