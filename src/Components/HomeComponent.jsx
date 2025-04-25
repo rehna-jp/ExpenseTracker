@@ -2,6 +2,7 @@ import React from 'react'
 import { LuWallet } from "react-icons/lu";
 import { IoMdAdd } from "react-icons/io";
 import { GoGraph } from "react-icons/go";
+import {Link} from 'react-router-dom'
 
 const HomeComponent = () => {
   return (
@@ -14,9 +15,9 @@ const HomeComponent = () => {
         <h4 className='font-medium'>You have $1000 left</h4>
       </div>
       <div className='flex flex-col gap-4'>
-        <button className='flex items-center gap-2 bg-purple-500 py-3 px-30 rounded-md'><IoMdAdd/>Add Expense</button>
-        <button className='flex items-center gap-2 px-30 py-3 bg-black rounded-md border-1 border-purple-400'><LuWallet/>View Budget</button>
-        <button className='flex items-center gap-2 px-30 py-3 bg-black rounded-md border-1 border-purple-400'><GoGraph/>View Reports</button>
+        <Link to='/add-expense' className='flex items-center gap-2 bg-purple-500 py-3 px-30 rounded-md cursor-pointer'><IoMdAdd/>Add Expense</Link>
+        <Link to='/budget' className='flex items-center gap-2 px-30 py-3 bg-black rounded-md border-1 border-purple-400 cursor-pointer'><LuWallet/>View Budget</Link>
+        <Link to='/dashboard' className='flex items-center gap-2 px-30 py-3 bg-black rounded-md border-1 border-purple-400 cursor-pointer'><GoGraph/>View Reports</Link>
       </div>
     </div>
   )

@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "hot": "^0.0.7",
+    "react": "^19.1.0",
+    "react-dom": "^19.0.0",
+    "toast": "^0.5.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

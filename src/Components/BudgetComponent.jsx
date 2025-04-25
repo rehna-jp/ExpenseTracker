@@ -1,19 +1,35 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { ExpensesContext } from '../context/ExpensesContext';
+import { Toaster , toast} from 'react-hot-toast';
 
 const BudgetComponent = () => {
-
+ 
+  const {expenses, budget, setBudget} = useContext(ExpensesContext);
 
   const [activeTab, setActiveTab] = useState('settings');
-  const [budget, setBudget] = useState(0);
   const [newBudget, setNewBudget] = useState('');
   const [budgetPeriod, setBudgetPeriod] = useState('weekly')
 
+  
+
+  const totalSpent = expenses.reduce((total, expense) => total + Number(expense.amount), 0);
+  const remainingBudget = budget - totalSpent;
+  const percentUsed = budget > 0 ? Math.round((totalSpent / budget ) * 100): 0;
 
 
   const handleBudget = () =>{
     if(!newBudget || isNaN(Number(newBudget))) return;
     setBudget(Number(newBudget));
     setNewBudget('');
+  }
+
+  const progressColor = percentUsed < 50 ? 'bg-green-500' : percentUsed < 80 ? 'bg-yellow-500' : 'bg-red-500';
+
+  const textProgressColor = percentUsed < 50 ? 'text-green-600' : percentUsed < 80 ? 'text-yellow-500' : 'text-red-500'
+
+  const handleSubmit = (e)=>{
+     e.preventDefault();
+     toast.success('Budget Added successfully!')
   }
 
   return (
@@ -26,15 +42,18 @@ const BudgetComponent = () => {
 
       {activeTab === 'settings' && (
              <div className='w-2/4 bg-[#272626] flex flex-col justify-around p-4 rounded-xl mt-8'>
+              <Toaster position='top-center'/>
+              <form onSubmit={handleSubmit} className='flex flex-col'>
              <label className='mt-3 font-bold mb-2'>Budget Amount</label>
              <input value={newBudget} onChange={(e) => {setNewBudget(e.target.value)}} type='number' placeholder='$ 0.00' min={0} step='0.01' className='p-2 bg-[#504e4e] rounded-md'/>
              <label className='mt-3 font-bold mb-2'>Budget Period</label>
-             <select className='p-2 bg-[#504e4e] rounded-md' value={budgetPeriod} onChange={(e) => setBudgetPeriod(e.target.value)}> 
+             <select className='p-2 bg-[#504e4e] rounded-md cursor-pointer' value={budgetPeriod} onChange={(e) => setBudgetPeriod(e.target.value)}> 
                 <option value='Weekly'>Weekly</option>
                 <option value='Monthly'>Monthly</option>
                 <option value='Yearly'>Yearly</option>
              </select>
-             <button onClick={handleBudget} className='mt-5 bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-md text-white'>Save</button>
+             <button onClick={handleBudget} className='mt-5 bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-md text-white cursor-pointer'>Save</button>
+             </form>
           </div>
       )}
 
@@ -51,21 +70,25 @@ const BudgetComponent = () => {
                </div>
                <div className='bg-[#dad5d5] text-black p-3 rounded-xl w-1/2'>
                   <h2>Spent so far</h2>
-                  <p>$0</p>
+                  <p>${totalSpent}</p>
                </div>
             </div>
             <div className=' mt-3'>
               <div className='flex justify-between'>
                  <h4 className='font-bold'>Budget Used</h4>
-                 <p>0% used</p>
+                 <p className={textProgressColor}>{percentUsed}% used</p>
               </div>
-              <div className='w-full h-2 bg-[#c4bdbd] mt-2 rounded-xl'></div>
+              <div className='w-full h-2 bg-[#c4bdbd] mt-2 rounded-xl'>
+                <div style={{width: `${percentUsed}%`}} 
+                className={`h-full ${progressColor} rounded-xl transition-all duration-300`}
+                ></div>
+              </div>
             </div>
             <div className='mt-3 bg-[#dad5d5] text-black p-3 rounded-xl'>
-              <h2>Remaining: $0</h2>
-              <p>you are on track with your budget</p>
+              <h2 className={textProgressColor}>Remaining: ${remainingBudget}</h2>
+              <p className={textProgressColor}>{remainingBudget >= 0 ? 'You are on track with your budget' : "You've exceeded your budget"}</p>
             </div>
-            <button className='mt-5 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-white'>Reset</button>
+            <button className='mt-5 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-white cursor-pointer'>Reset</button>
           </div>
            
       )}
