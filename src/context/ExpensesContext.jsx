@@ -12,6 +12,10 @@ export const ExpensesProvider = ({children}) => {
         const storedBudget = localStorage.getItem('budget');
         return storedBudget ? JSON.parse(storedBudget) : 0;
     });
+    const [budgetPeriod, setBudgetPeriod] = useState(() => {
+        const storedBudgetPeriod = localStorage.getItem('budgetPeriod');
+        return storedBudgetPeriod ? JSON.parse(storedBudgetPeriod) : 'weekly';
+    });
 
     useEffect(() => {
         localStorage.setItem('expenses', JSON.stringify(expenses));
@@ -22,10 +26,13 @@ export const ExpensesProvider = ({children}) => {
     },[budget])
     
     const deleteExpense = (id) => {
-        setExpenses(prevExpenses => prevExpenses.filter(expenses => expenses.id !== id))
+        setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id))
     }
+    useEffect(() => {
+        localStorage.setItem('budgetPeriod', JSON.stringify(budgetPeriod)); 
+      }, [budgetPeriod]);
     return(
-        <ExpensesContext.Provider value={{expenses, setExpenses, budget , setBudget}}>
+        <ExpensesContext.Provider value={{expenses, setExpenses, budget , setBudget,deleteExpense, budgetPeriod, setBudgetPeriod}}>
             {children}
         </ExpensesContext.Provider>
     )

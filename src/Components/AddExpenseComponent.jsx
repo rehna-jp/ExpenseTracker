@@ -38,7 +38,7 @@ const AddExpenseComponent = () => {
     }
 
   return (
-    <div className='flex flex-col  items-center gap-2 mt-2'>
+    <div className='flex flex-col  items-center gap-2 mt-5'>
         <h1 className='text-3xl font-bold'>Add Expense</h1>
         <div className='flex flex-col bg-[#272626] w-1/3 p-5 rounded-md border-1 border-purple-200'>
         <Toaster position='top-center'/>
