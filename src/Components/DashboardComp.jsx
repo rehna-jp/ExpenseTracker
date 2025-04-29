@@ -7,6 +7,7 @@ import { BudgetSummary } from './BudgetComponent';
 import { delay, motion } from 'framer-motion';
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import DashboardCharts from './DashboardChart';
 
 
 
@@ -40,14 +41,23 @@ const DashboardComp = () => {
 
   const getPeriodExpenses = () => {
     const now = new Date();
+    // now.setHours(0,0,0,0);
+
     return expenses.filter((expense) => {
       const expenseDate = new Date(expense.date);
+    //    expenseDate.setHours(0,0,0,0);
+
       if (budgetPeriod?.toLowerCase() === 'weekly') {
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - now.getDay());
+        // startOfWeek.setHours(0,0,0,0);
+
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
+        // endOfWeek.setHours(23, 59, 59, 999);
+
         return expenseDate >= startOfWeek && expenseDate <= endOfWeek;
+
       } else if (budgetPeriod?.toLowerCase() === 'monthly') {
         return (
           expenseDate.getMonth() === now.getMonth() &&
@@ -60,6 +70,10 @@ const DashboardComp = () => {
       }
     });
   };
+
+  console.log("budgetPeriod:", budgetPeriod);
+  console.log("All expenses:", expenses);
+  console.log("Filtered periodExpenses:", getPeriodExpenses());
 
   const periodExpenses = getPeriodExpenses();
   const totalSpent = expenses.reduce((total, expense) => total + Number(expense.amount), 0);
@@ -117,6 +131,10 @@ const DashboardComp = () => {
           }}
         />
       </div>
+
+      <div className="w-full px-4 md:px-8">
+        <DashboardCharts/>
+      </div>
       <div className='mt-5 w-full flex gap-3'>
         
         <div className='w-1/2 p-3'>
@@ -124,19 +142,28 @@ const DashboardComp = () => {
               <h2 className='font-bold text-2xl'>Recent Expenses</h2>
               <Link to='/expenses' className='text-purple-500 flex items-center gap-3'>View all <FaArrowRight /></Link>
             </div>
-            <div className='bg-[#222121] p-4 rounded-xl'>
-          {recentExpenses.map((expense, index) => (
-            <div key={expense.id} className='flex justify-between mb-4'>
-              <div className='flex flex-col'>
-                <span className='text-sm text-[#b4aeae]'>Date: {new Date(expense.date).toLocaleDateString()}</span>
-                <span className='font-semibold'>{expense.title}</span>
-              </div>
-              <div className='flex items-center'>
-                <span className='font-bold'>${expense.amount.toLocaleString()}</span>
-              </div>
+            <div className="flex flex-col gap-4 mt-4">
+    {recentExpenses.length > 0 ? (
+      recentExpenses.map((expense) => (
+        <div 
+          key={expense.id} 
+          className="bg-[#222121] p-4 rounded-xl border-[1px] border-violet-400 hover:-translate-y-1 transition-transform duration-300 ease-in-out hover:shadow-md"
+        >
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="font-semibold text-lg">{expense.title}</h3>
+              <p className="text-[#b4aeae] text-sm">{expense.date}</p>
             </div>
-          ))}
+            <div className="font-bold text-purple-400">
+              ${Number(expense.amount).toLocaleString()}
+            </div>
+          </div>
         </div>
+      ))
+    ) : (
+      <p className="text-[#b4aeae] mt-4">No expenses yet.</p>
+    )}
+  </div>
         </div>
         <BudgetSummary className='w-1/2 '/>
       </div>
