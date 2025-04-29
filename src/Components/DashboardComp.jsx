@@ -71,9 +71,6 @@ const DashboardComp = () => {
     });
   };
 
-  console.log("budgetPeriod:", budgetPeriod);
-  console.log("All expenses:", expenses);
-  console.log("Filtered periodExpenses:", getPeriodExpenses());
 
   const periodExpenses = getPeriodExpenses();
   const totalSpent = expenses.reduce((total, expense) => total + Number(expense.amount), 0);
@@ -152,7 +149,9 @@ const DashboardComp = () => {
           <div className="flex justify-between items-center">
             <div>
               <h3 className="font-semibold text-lg">{expense.title}</h3>
-              <p className="text-[#b4aeae] text-sm">{expense.date}</p>
+              <p className="text-[#b4aeae] text-sm">{new Date(expense.date).toLocaleString('default', {
+                  day: 'numeric', month: 'short', year: 'numeric'
+               })}</p>
             </div>
             <div className="font-bold text-purple-400">
               ${Number(expense.amount).toLocaleString()}
@@ -173,3 +172,5 @@ const DashboardComp = () => {
 }
 
 export default DashboardComp;
+
+
